@@ -1,0 +1,111 @@
+Andrei, 26 februarie 2020
+-> am creat repository-ul
+
+Ionuț, 29 februarie 2020
+-> am creat un Makefile simplu cu cele trei reguli de bază
+-> am creat fișierul xboard.c care conține câteva structuri
+   pentru piesele de șah și tabla de șah + 3 funcții de creat
+   piese, tabla și afișarea tablei de joc
+-> rămâne de discutat dacă se păstrează aceste structuri de date
+   și scheletele aferente acestora pentru rezolvarea etapei 1
+
+Andrei, 1 martie 2020
+-> ne-am hotărât să utilizăm bitboard-uri pentru memorarea stării joculul,
+   astfel că am modificat codul în consecință
+-> am conceput un mic schelet pe baza căruia vom dezvolta engine-ul de șah
+-> am actualizat Makefile-ul
+-> momentan engine-ul afișează o tablă de șah la început de joc
+
+Andrei, 2 martie 2020
+-> mici modificari de notații prin cod
+
+Andrei, 5 martie 2020
+-> am adaugat noi tabele cu bitboard-uri utile ce vor folosi mai târziu
+   pentru generarea de mișcări pentru fiecare piesă în parte
+-> am rescris codul de inițializare a tablei de joc pentru a fi mai intuitiv
+
+Ionuț, 7 martie 2020
+-> am făcut un schelet de cod pentru xboard.c în care va trebui să completez
+   comenzile neimplementate
+-> pentru continuarea implementării aveam nevoie de partea de cod pentru 
+   atacuri a lui Andrei, dar nu a mers gitlab-ul
+-> voi continua după ce își revine gitlab
+
+Andrei, 10 martie 2020
+-> am implementat generarea tuturor seturilor de atacuri pentru fiecare piesă
+-> pentru piesele „sliding” (tură, nebun, regina=tură+nebun) se folosesc
+   bitboard-uri „magice”, adică se generează toate seturile de atacuri pentru
+   fiecare pătrat, pentru fiecare posibilitate de ocupare a tablei de joc
+   (ce piese ocupa tabla de joc) și se pun într-un lookup table; partea
+   „magică” constă în faptul că indexarea LUT-ului se face printr-un hash creat
+   prin înmulțirea unui număr „magic” care să nu creeze coliziuni cu biții
+   semnificativi de ocupare a tablei de joc (biți semnificativi înseamna pentru
+   tura „ce mă blocheaza pe verticala mea și pe orizontala mea?”, iar pentru
+   nebun „ce mă blochează pe cele 2 diagonale ale mele?”)
+-> pentru piesele non-„sliding” (cal, rege, pion) se generează de asemenea
+   lookup table-uri pentru seturile de atac pentru fiecare pătrat în parte, dar
+   se poate indexa direct după pătrat
+
+Ionuț, 15 martie 2020
+-> am realizat o implementare minimală a mișcării cailor pentru prima etapă
+-> realizez, după ce a fost dată o comandă de către jucător, o listă a tuturor
+   mișcărilor posibile pentru engine pentru un anumit tip de piesă (momentan
+   doar pentru cal), iar apoi, ținând cont de faptul că e doar prima etapă,
+   aleg aleatoriu o mișcare din setul de mișcări posibile după care golesc
+   lista de mișcări
+-> pentru a asigura faptul că jocul se încheie cu succes, dupa ce engine-ul
+   primește o mișcare de la jucător, verifică - momentan hardcodat, va fi
+   automat după ce vor fi implementate restul de mișcări - dacă acea mișcare
+   a însemnat pierderea unui cal, iar dacă da, va șterge calul din
+   bitboard-urile tablei de joc
+-> tot aici, dacă a pierdut toți caii, înseamnă că lista de mutări posibile
+   este goală, deci numărul total de mutări pe care poate să le faca engine-ul
+   este 0, în acest moment dând resign
+
+Andrei, 16 martie 2020
+-> am îmbunătățit considerabil API-ul de comunicare cu xboard (vezi fișierele
+   sursă care încep cu „xboard”)
+-> am făcut posibil ca engine-ul să joace atât cu alb, cât și cu negru,
+   astfel că acum se poate juca și engine vs. engine
+
+Andrei, 17 martie 2020
+-> am terminat prima etapă => am creat arhiva `Etapa1.zip`
+
+Andrei, 17 aprilie 2020
+-> am adăugat un script (debug-xboard.sh) pentru facilitarea depanării;
+   pentru rulare se poate folosi `make xboard`
+-> am restructurat o parte din cod
+-> am implementat parsarea șirurilor FEN pentru comanda `setboard`
+
+Ionuț, 18 aprilie 2020
+-> am implementat majoritatea mișcărilor
+-> acum lista de mișcări va cuprinde destule mișcări pentru un joc demo
+-> voi restructura codul și implementa restul de mișcări mai târziu
+
+Andrei, 19 aprilie 2020
+-> am implementat modul force utilizat de XBoard
+
+Ionuț, 19 aprilie 2020
+-> am restructurat codul pentru generarea mișcărilor
+-> am implementat toate mișcările posibile
+
+Ionuț, 20 aprilie 2020
+-> am adăugat implementare pentru piece-square-table necesar pentru funcția
+   de evaluare
+-> am implementat funcția de evaluare care va oferi, pentru
+   culoarea dată ca argument, avantajul jucătorului cu acea
+   culoare în centipawns
+
+Andrei, 20 aprilie 2020
+-> am finalizat menținerea corectă a tablei de șah interne
+
+Andrei, 21 aprilie 2020
+-> am implementat o variantă simplă de negamax
+-> am terminat a doua etapă => am creat arhiva `Etapa2.zip`
+
+Andrei, 19 mai 2020
+-> am implementat suport pentru opening books
+
+Ionuț, 19 mai 2020
+-> am terminat de implementat alpha-beta pruning & euristici elevate
+-> am terminat a treia etapă => am creat arhiva `Etapa3.zip`

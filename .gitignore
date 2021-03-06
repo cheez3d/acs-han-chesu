@@ -1,0 +1,12 @@
+/.debug
+/xboard.debug
+/han-chesu
+
+/.vscode/settings.json
+
+/checker/
+
+/obj/
+
+/others/
+/sources/
